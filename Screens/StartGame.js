@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { View, StyleSheet, TextInput, Alert, Text } from "react-native";
 import MyButton from "../components/myButton";
+import Colors from "../constants/colors";
 
-export default function StartGame() {
+export default function StartGame({ onUserInput }) {
   const [enteredNum, setEnteredNum] = useState("");
 
   function numberInputHandler(text) {
@@ -20,7 +21,8 @@ export default function StartGame() {
       );
       return;
     }
-    console.log("valid number");
+    console.log(num);
+    onUserInput(num);
   }
 
   function resetInputHandler() {
@@ -28,7 +30,7 @@ export default function StartGame() {
   }
 
   return (
-    <View style={styles.app} >
+    <View style={styles.box}>
       <TextInput
         maxLength={2}
         enablesReturnKeyAutomatically={true}
@@ -36,44 +38,48 @@ export default function StartGame() {
         style={styles.textInput}
         onChangeText={numberInputHandler}
         value={enteredNum}
-        placeholder="0"
-        placeholderTextColor="#7e07434b"
+        placeholder="Enter a number"
+        placeholderTextColor={Colors.placeholderText}
       />
 
       <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <MyButton onPress={resetInputHandler}> Reset </MyButton>
-        </View>
-
-        <View style={{ flex: 1 }} >
-          <MyButton onPress={confirmInputHandler}> Confirm </MyButton>
-        </View>
+        <MyButton onPress={resetInputHandler} outer={styles.flex}>
+          Reset
+        </MyButton>
+        <MyButton onPress={confirmInputHandler} outer={styles.flex}>
+          Confirm
+        </MyButton>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  app: {
+  box: {
     padding: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "hsl(330, 95%, 15%)",
-    marginTop: 68,
+    backgroundColor: Colors.myMaroon,
+    marginTop: 38,
     marginHorizontal: 18,
     borderRadius: 8,
     elevation: 15,
   },
 
   textInput: {
-    borderBottomColor: "#ddb52f",
+    borderBottomColor: Colors.myYellow,
     borderBottomWidth: 2,
-    color: "#ddb52f",
-    fontSize: 36,
+    paddingBottom: 2,
+    color: Colors.myYellow,
+    fontSize: 26,
     fontWeight: "bold",
-    height: 45,
-    width: 50,
+    // height: 45,
+    width: "55%",
     marginBottom: 10,
     textAlign: "center",
+  },
+
+  flex: {
+    flex: 1,
   },
 });
